@@ -18,7 +18,7 @@ void print(binarytreenode<int>* root){
     print(root->left);
     print(root->right);
 }
-// take input
+// take input 
 
 binarytreenode <int>* takeInput(){
     int rootdata;
@@ -36,6 +36,27 @@ binarytreenode <int>* takeInput(){
     return root;
 }
 
+//** take input level wise **//
+ binarytreenode<int>* takeinputLevelwise(){
+     cout<<"enter root data"<<endl;
+     int rootdata;
+     cin>>rootdata;
+     if(rootdata == -1){
+         return NULL;
+     }
+    binarytreenode<int>* root = new binarytreenode<int>(rootdata);
+     queue<binarytreenode<int>*> pending;
+     pending.push(root);
+
+     while(pending.size()!=0){
+         binarytreenode<int>* front = pending.front();
+         pending.pop();
+         front->left = takeinputLevelwise();
+         front->right = takeinputLevelwise();
+     }
+     return root;
+ }
+
 
 
 int main(){
@@ -50,8 +71,9 @@ int main(){
     */
 
    /* user input */
-    binarytreenode<int> * root = takeInput();
-
+   // binarytreenode<int> * root = takeInput();
+// input level wise
+    binarytreenode<int>* root = takeinputLevelwise();
     print(root);
     return 0;
 }
