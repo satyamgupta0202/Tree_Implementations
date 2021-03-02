@@ -18,6 +18,61 @@ void print(binarytreenode<int>* root){
     print(root->left);
     print(root->right);
 }
+
+// print input Level wise
+
+void printLevel(binarytreenode<int>* root){
+    queue<binarytreenode<int>*>level;
+    if(root==NULL){
+        return;
+    }
+
+    level.push(root);
+    while(level.size()!=0){
+
+        int temp = level.size();
+        while(temp>0){
+        binarytreenode<int>* front = level.front();
+        cout<<front->data;
+        if(front->left!=NULL){
+            level.push(front->left);
+        }
+        if(front->right!=NULL){
+            level.push(front->right);
+        }
+    
+        level.pop();
+        temp--;
+        
+        }
+        
+    }
+
+}
+
+// counting node 
+
+int countnode(binarytreenode<int>*root){
+    if(root== NULL){
+        return 0;
+    }
+
+    return (1+ countnode(root->left)+countnode(root->right));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // take input 
 
 binarytreenode <int>* takeInput(){
@@ -71,9 +126,13 @@ int main(){
     */
 
    /* user input */
-   // binarytreenode<int> * root = takeInput();
+   //binarytreenode<int> * root = takeInput();
 // input level wise
     binarytreenode<int>* root = takeinputLevelwise();
-    print(root);
+   // print(root);
+   printLevel(root);
+
+   int c= countnode(root);
+   cout<<"total nodes "<<c<<endl;
     return 0;
 }
