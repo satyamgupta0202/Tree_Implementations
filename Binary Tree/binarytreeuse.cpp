@@ -61,10 +61,11 @@ int countnode(binarytreenode<int>*root){
 }
 
 // height of node
+// time complexity n^2 
 
 int height(binarytreenode<int>* root){
     if (root==NULL){
-        return -1;
+        return 0;
     }
      else
     { 
@@ -79,8 +80,73 @@ int height(binarytreenode<int>* root){
     } 
 }
 
+////////// Diameter of tree
+// time complexity n^2 
+int diameter(binarytreenode<int>* root){
+    if(root==NULL){
+        return 0;
+    }
+
+   int o3 = height(root->left)+height(root->right);
+    int o1 = diameter(root->left);
+    int o2 = diameter(root->right);
+ 
+    return (max(o1,max(o2,o3)));
+}
+
+pair<int,int> heightDiameter(binarytreenode<int>* root){
+    if(root==NULL){
+        pair<int,int>p;
+        p.first = 0;
+        p.second = 0;
+        return p;
+    }
+    pair<int,int> leftans = heightDiameter(root->left);
+    pair<int,int> rightans = heightDiameter(root->right);
+    int lh = leftans.first;
+    int rh = rightans.first;
+    int ld = leftans.second;
+    int rd = rightans.second;
+
+    int h= 1+max(lh,rh);
+    int d = max(lh+rh,max(ld,rd));
+    pair<int,int>p;
+    p.first=h;
+    p.second=d;
+    return p;
+}
 
 
+
+
+
+
+
+
+
+// traversal in tree 
+
+
+void preorder(binarytreenode<int>* root){
+    if(root==NULL){
+        return ;
+    }
+
+    cout<<root->data;
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void inorder(binarytreenode<int>* root){
+    if(root==NULL){
+        return ;
+    }
+    
+        inorder(root->left);
+        cout<<root->data;
+        inorder(root->right);
+
+}
 
 
 
@@ -143,15 +209,22 @@ int main(){
     */
 
    /* user input */
-   binarytreenode<int> * root = takeInput();
+  // binarytreenode<int> * root = takeInput();
 // input level wise
-   // binarytreenode<int>* root = takeinputLevelwise();
+  binarytreenode<int>* root = takeinputLevelwise();
    // print(root);
   // printLevel(root);
 
   // int c= countnode(root);
   // cout<<"total nodes "<<c<<endl;
-  int h= height(root);
-  cout<<"height "<<h<<endl;
+ int h= height(root);
+ cout<<"height "<<h<<endl;
+  //inorder(root);
+ //int d =diameter(root);
+ //cout<<d<<endl;
+  pair<int,int> p;
+  p = heightDiameter(root);
+  cout<<"height"<<p.first<<endl;
+  cout<<"diameter"<<p.second<<endl;
     return 0;
 }
