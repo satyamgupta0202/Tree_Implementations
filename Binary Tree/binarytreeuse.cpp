@@ -60,7 +60,24 @@ int countnode(binarytreenode<int>*root){
     return (1+ countnode(root->left)+countnode(root->right));
 }
 
+// height of node
 
+int height(binarytreenode<int>* root){
+    if (root==NULL){
+        return -1;
+    }
+     else
+    { 
+        /* compute the depth of each subtree */
+        int lDepth = height(root->left); 
+        int rDepth = height(root->right); 
+     
+        /* use the larger one */
+        if (lDepth > rDepth) 
+            return(lDepth + 1); 
+        else return(rDepth + 1); 
+    } 
+}
 
 
 
@@ -126,13 +143,15 @@ int main(){
     */
 
    /* user input */
-   //binarytreenode<int> * root = takeInput();
+   binarytreenode<int> * root = takeInput();
 // input level wise
-    binarytreenode<int>* root = takeinputLevelwise();
+   // binarytreenode<int>* root = takeinputLevelwise();
    // print(root);
-   printLevel(root);
+  // printLevel(root);
 
-   int c= countnode(root);
-   cout<<"total nodes "<<c<<endl;
+  // int c= countnode(root);
+  // cout<<"total nodes "<<c<<endl;
+  int h= height(root);
+  cout<<"height "<<h<<endl;
     return 0;
 }
