@@ -1,72 +1,113 @@
 # include <bits/stdc++.h>
-# include "treenode.h"
+# include "binarytreenode2.h"
 using namespace std;
-int l;
-/**----------- printing in tree------------------------**/
 
-void print(treenode<int>* root){
+//print
+void print(binarytreenode<int>* root){
+    if(root==NULL){
+        return ;
+    }
     cout<<root->data<<":";
-    for(int i=0;i<root->children.size();i++){
-        cout<<root->children[i]->data<<",";
+    if(root->left){
+        cout<< "left:" << root->left->data;
+    }
+     if(root->right){
+        cout<< "Right:" << root->right->data;
     }
     cout<<endl;
-    for(int i=0;i<root->children.size();i++){
-        print(root->children[i]);
-    }
+    print(root->left);
+    print(root->right);
 }
 
+// print input Level wise
 
-/** ---------- printing tree in level order traversal **/
- 
-void printLevel(treenode<int>* root){
-    queue<treenode<int>*>p;
-    p.push(root);
+void printLevel(binarytreenode<int>* root){
+    queue<binarytreenode<int>*>level;
+    if(root==NULL){
+        return;
+    }
+
+    level.push(root);
+    while(level.size()!=0){
+
+        int temp = level.size();
+        while(temp>0){
+        binarytreenode<int>* front = level.front();
+        cout<<front->data;
+        if(front->left!=NULL){
+            level.push(front->left);
+        }
+        if(front->right!=NULL){
+            level.push(front->right);
+        }
     
-    while(p.size()!=0){
-        cout<<p.front()->data<<" ";
-        for(int i=0;i<p.front()->children.size();i++){
-            p.push(p.front()->children[i]);
+        level.pop();
+        temp--;
+        
         }
-        p.pop();
+        
     }
+
 }
 
-///***--- taking input from user in level order treaversal manner**/
-treenode<int>* Levelinput(){
-    cout<<"enter root data"<<endl;
-    int rootdata;
-    cin>>rootdata;
-    treenode<int>* root = new treenode<int>(rootdata);
-    queue<treenode<int>*>pending;
-    pending.push(root);
 
-    while(pending.size()!=0){
-        treenode<int>* front = pending.front();
-        pending.pop();
+//** take input level wise **//
+ binarytreenode<int>* takeinputLevelwise(){
+     cout<<"enter root data"<<endl;
+     int rootdata;
+     cin>>rootdata;
+     if(rootdata == -1){
+         return NULL;
+     }
+    binarytreenode<int>* root = new binarytreenode<int>(rootdata);
+     queue<binarytreenode<int>*> pending;
+     pending.push(root);
 
-        cout<<"Enter the no of childern of"<<front->data<<endl;
-        int nc;
-        cin>>nc;
+     while(pending.size()!=0){
+         binarytreenode<int>* front = pending.front();
+         pending.pop();
+         front->left = takeinputLevelwise();
+         front->right = takeinputLevelwise();
+     }
+     return root;
+ }
 
-        for(int i=1;i<=nc;i++){
-            int childdata;
-            cin>>childdata;
+ ////////////////////////////////////////////////////
 
-            treenode<int>* child = new treenode<int>(childdata);
-            front->children.push_back(child);
-            pending.push(child);
-        }
+  int minimum(binarytreenode<int>* root){
+     if(root==NULL){
+         return INT_MAX;
+     }
+     return (min(root->data,min(minimum(root->left),minimum(root->right))));
+ }
+ int maximum(binarytreenode<int>* root){
+     if(root==NULL){
+         return INT_MIN;
+     }
+     return (max(root->data,max(maximum(root->left),maximum(root->right))));
+ }
+
+
+ bool isBst(binarytreenode<int>* root){
+    if(root==NULL){
+        return true;
     }
-    return root;
+    int left1 =  maximum(root->left);
+    int right1 = minimum(root->right);
+
+    bool output= (((root->data)>left1) && ((root->data)<=right1) && (isBst(root->left)) && (isBst(root->right)));
+    return(output);
 }
+
+
+
 
 
 int main(){
 
-   
 
-  treenode<int>* root = Levelinput();
-
-   
+  binarytreenode<int>* root = takeinputLevelwise();
+   cout<<isBst(root);
+  
     return 0;
 }
