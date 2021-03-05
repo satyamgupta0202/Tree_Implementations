@@ -56,7 +56,16 @@ class ourmap{
 //2//
 
     v getValue(string key){
+        int bucketIndex = getbucketIndex(string key);
+        mapnode<v>*head = bucket[bucketIndex];
+        while(head!=NULL){
 
+            if(head->key == key ){
+                return key->value;
+            }
+            head=head->next;
+        }
+   return 0;
     }
 
 private:
@@ -122,9 +131,4 @@ private:
          }
          return 0;
     }
-
-       
-
-
-
 };
