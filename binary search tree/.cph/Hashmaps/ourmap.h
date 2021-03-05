@@ -1,28 +1,29 @@
 # include <bits/stdc++.h>
 using namespace std;
-template<typename v>
+template<typename v>    // v denotes type of value
 
-class mapnode {
+class mapnode {              // create a sort of link list
     public:
     string key;
     v value;
     mapnode* next;
 
 
-    mapnode(string key , v value){
+    mapnode(string key , v value){     // constructor
         this->key = key;
         this->value = value;
     }
 
-    ~mapnode(){
+    ~mapnode(){                        //destructor
         delete next;
     }
 };
 
+
 template<typename v>
 
-class ourmap{
-    mapnode** buckets;
+class ourmap{          
+    mapnode** buckets;     // address of haed of address of bucket
     int size;
     int numbuckets;
 
@@ -97,7 +98,29 @@ private:
 
 
     v remove(string key){
+        int bucketIndex = getbucketIndex(string key);
+         mapnode<v>*head = bucket[bucketIndex];
+         mapnode<v>*prev = NULL;
 
+         while(head!=NULL){
+
+             if(head->key == key){
+                 if(prev==NULL){
+                     buckets[bucketIndex]=head->next;
+                 }
+                 else{
+                     prev->next = head->next;
+                 }
+                 v value = head->value;
+                 head->next=NULL;
+                 delete head;
+                 count--;
+                 return value;
+             }
+             prev = head;
+             head = head->next;
+         }
+         return 0;
     }
 
        
